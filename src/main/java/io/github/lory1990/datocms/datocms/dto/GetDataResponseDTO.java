@@ -1,4 +1,4 @@
-package com.datocms.dto;
+package io.github.lory1990.datocms.datocms.dto;
 
 public class GetDataResponseDTO<A> {
 

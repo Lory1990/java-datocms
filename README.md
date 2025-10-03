@@ -1,5 +1,9 @@
 # DatoCMS Java Client
 
+[![Maven Central](https://img.shields.io/maven-central/v/io.github.lory1990/java-datocms.svg?label=Maven%20Central)](https://search.maven.org/artifact/io.github.lory1990/java-datocms)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Java](https://img.shields.io/badge/Java-17%2B-blue.svg)](https://www.oracle.com/java/)
+
 A lightweight Java client library for interacting with the [DatoCMS](https://www.datocms.com/) GraphQL API.
 
 ## About DatoCMS
@@ -27,14 +31,26 @@ Add the following to your `build.gradle.kts`:
 
 ```kotlin
 dependencies {
-    implementation("com.datocms:java-datocms:0.0.1")
+    implementation("io.github.lory1990:java-datocms:0.0.1")
 }
+```
+
+### Using Maven
+
+Add the following to your `pom.xml`:
+
+```xml
+<dependency>
+    <groupId>io.github.lory1990</groupId>
+    <artifactId>java-datocms</artifactId>
+    <version>0.0.1</version>
+</dependency>
 ```
 
 ### Building from Source
 
 ```bash
-git clone <repository-url>
+git clone https://github.com/Lory1990/java-datocms.git
 cd java-datocms
 ./gradlew build
 ```
@@ -114,6 +130,83 @@ GetDataRequestDTO request = new GetDataRequestDTO(
 AllArticlesResponse result = client.getData(request, AllArticlesResponse.class);
 ```
 
+### Complete Example: Fetching Blog Posts
+
+```java
+import com.datocms.DatoCMSClient;
+import com.datocms.dto.GetDataRequestDTO;
+
+public class BlogExample {
+    public static void main(String[] args) {
+        try {
+            // Initialize client
+            DatoCMSClient client = new DatoCMSClient("your-api-key");
+
+            // Query for blog posts
+            GetDataRequestDTO request = new GetDataRequestDTO(
+                "AllBlogPosts",
+                """
+                query AllBlogPosts {
+                    allBlogPosts(orderBy: publishedAt_DESC, first: 10) {
+                        id
+                        title
+                        slug
+                        excerpt
+                        publishedAt
+                        author {
+                            name
+                            avatar {
+                                url
+                            }
+                        }
+                    }
+                }
+                """,
+                null
+            );
+
+            // Execute query
+            BlogPostsResponse response = client.getData(request, BlogPostsResponse.class);
+
+            // Use the data
+            response.getAllBlogPosts().forEach(post -> {
+                System.out.println(post.getTitle() + " by " + post.getAuthor().getName());
+            });
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+}
+
+// Response classes
+class BlogPostsResponse {
+    private List<BlogPost> allBlogPosts;
+
+    public List<BlogPost> getAllBlogPosts() {
+        return allBlogPosts;
+    }
+}
+
+class BlogPost {
+    private String id;
+    private String title;
+    private String slug;
+    private String excerpt;
+    private String publishedAt;
+    private Author author;
+
+    // Getters...
+}
+
+class Author {
+    private String name;
+    private Avatar avatar;
+
+    // Getters...
+}
+```
+
 ## API Reference
 
 ### DatoCMSClient
@@ -143,6 +236,37 @@ AllArticlesResponse result = client.getData(request, AllArticlesResponse.class);
 - `operationName` - The name of the GraphQL operation
 - `query` - The GraphQL query string
 - `variables` - Map of query variables (can be null)
+
+### Error Handling
+
+```java
+import com.datocms.DatoCMSClient;
+import com.datocms.dto.GetDataRequestDTO;
+import java.io.IOException;
+
+public class ErrorHandlingExample {
+    public static void main(String[] args) {
+        DatoCMSClient client = new DatoCMSClient("your-api-key");
+
+        GetDataRequestDTO request = new GetDataRequestDTO(
+            "GetArticle",
+            "query GetArticle($id: String!) { article(filter: {id: {eq: $id}}) { title } }",
+            Map.of("id", "123")
+        );
+
+        try {
+            Article response = client.getData(request, Article.class);
+            System.out.println("Article: " + response.getTitle());
+
+        } catch (IOException e) {
+            System.err.println("Network error: " + e.getMessage());
+        } catch (InterruptedException e) {
+            System.err.println("Request interrupted: " + e.getMessage());
+            Thread.currentThread().interrupt();
+        }
+    }
+}
+```
 
 ## Configuration
 
@@ -184,7 +308,7 @@ private static final String TEST_API_KEY = "your-api-key";
 
 ## License
 
-[Add your license information here]
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 ## Contributing
 
