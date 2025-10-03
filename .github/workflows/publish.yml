@@ -51,8 +51,8 @@ jobs:
             -Pversion=${{ steps.get_version.outputs.VERSION }} \
             -Psigning.gnupg.executable=gpg \
             -Psigning.gnupg.passphrase="${GPG_PASSPHRASE}" \
-            -Psigning.gnupg.keyName="${GPG_KEY_ID}"
-            -PsonatypeUsername="${SONATYPE_USERNAME}"
+            -Psigning.gnupg.keyName="${GPG_KEY_ID}" \
+            -PsonatypeUsername="${SONATYPE_USERNAME}" \
             -PsonatypePassword="${SONATYPE_PASSWORD}"
 
       - name: Create GitHub Release
