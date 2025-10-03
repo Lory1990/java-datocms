@@ -1,7 +1,7 @@
-package io.github.lory1990.datocms.datocms;
+package io.github.lory1990.datocms;
 
-import io.github.lory1990.datocms.datocms.dto.GetDataRequestDTO;
-import io.github.lory1990.datocms.datocms.dto.GetDataResponseDTO;
+import io.github.lory1990.datocms.dto.GetDataRequestDTO;
+import io.github.lory1990.datocms.dto.GetDataResponseDTO;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 

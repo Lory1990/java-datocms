@@ -1,4 +1,4 @@
-package io.github.lory1990.datocms.datocms.dto;
+package io.github.lory1990.datocms.dto;
 
 import java.util.Map;
 

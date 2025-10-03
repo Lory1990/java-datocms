@@ -1,7 +1,6 @@
 package io.github.lory1990.datocms;
 
-import io.github.lory1990.datocms.datocms.DatoCMSClient;
-import io.github.lory1990.datocms.datocms.dto.GetDataRequestDTO;
+import io.github.lory1990.datocms.dto.GetDataRequestDTO;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
