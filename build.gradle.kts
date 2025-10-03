@@ -5,7 +5,7 @@ plugins {
 }
 
 group = "io.github.lory1990"
-version = "0.0.1"
+version = project.findProperty("version")?.toString() ?: "0.0.1"
 
 repositories {
     mavenCentral()
