@@ -36,7 +36,7 @@ jobs:
           ORG_GRADLE_PROJECT_mavenCentralPassword: ${{ secrets.SONATYPE_PASSWORD }}
           ORG_GRADLE_PROJECT_signingInMemoryKey: ${{ secrets.GPG_PRIVATE_KEY }}
           ORG_GRADLE_PROJECT_signingInMemoryKeyPassword: ${{ secrets.GPG_PASSPHRASE }}
-        run: ./gradlew publishToMavenCentral --no-configuration-cache -Pversion=${{ steps.get_version.outputs.VERSION }}
+        run: ./gradlew publishToMavenCentral --no-configuration-cache --stacktrace -Pversion=${{ steps.get_version.outputs.VERSION }}
 
       - name: Create GitHub Release
         uses: actions/create-release@v1
